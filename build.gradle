@@ -1,0 +1,40 @@
+plugins {
+    id 'org.jetbrains.intellij' version '1.17.2'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'java'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+javafx {
+    version = "17" // 选择适用的JavaFX版本，建议使用与项目JDK兼容的最新版本
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.web', 'javafx.swing'] // 添加`javafx.web`模块
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    version = '2021.2.2'
+}
+patchPluginXml {
+    changeNotes = """
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>"""
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+test {
+    useJUnitPlatform()
+}

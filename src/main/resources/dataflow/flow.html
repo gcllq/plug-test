@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Data Flow UI with Drawflow</title>
+    <style>
+        #drawflow {
+            height: 400px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+
+<div id="drawflow"></div>
+
+<script src="drawflow.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const editor = new Drawflow(document.getElementById("drawflow"));
+        editor.start();
+
+        // 添加一个简单的节点示例
+        editor.addNode('example_node', 1, 1, 100, 200, 'Example Node', {}, '<div>Example</div>', '', false);
+    });
+
+</script>
+
+</body>
+</html>

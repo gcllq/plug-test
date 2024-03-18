@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Drag Elements, Arrange and Delete</title>
+    <style>
+        #source, #target {
+            width: 48%;
+            height: 500px;
+            border: 1px solid black;
+            display: inline-block;
+            vertical-align: top;
+        }
+        .draggable {
+            margin: 10px;
+            padding: 20px;
+            background-color: lightgray;
+            cursor: grab;
+        }
+        .draggable.target-elem {
+            background-color: lightblue;
+            cursor: move; /* Change cursor to indicate move action for target elements */
+            position: absolute; /* Necessary for positioning within the target */
+        }
+    </style>
+</head>
+<body>
+
+<div id="source">
+    <div class="draggable" draggable="true">Element A</div>
+    <div class="draggable" draggable="true">Element B</div>
+    <div class="draggable" draggable="true">Element C</div>
+</div>
+
+<div id="target" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+
+<script src="script.js"></script>
+</body>
+</html>

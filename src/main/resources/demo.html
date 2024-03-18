@@ -1,0 +1,43 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>贪玩蓝月</title>
+    <script src="script/demo.js"></script>
+    <script type="text/javascript">
+        //与java插件代码交互的方法，由java插件实现，前端代码无需实现
+        function cdfDownLoadByStr(value){
+
+        }
+        function cdfDownLoad() {
+            const cdfData = document.getElementById('cdfData').innerHTML;
+            cdfDownLoadByStr(cdfData);
+        }
+
+        //与java插件代码交互的方法，由java插件实现，前端代码无需实现
+        function callBackJavaGetData() {
+        }
+
+        //js执行java回调后，java在执行完成后，可以执行js代码；此代码在onsuccess中执行
+        function setNewData(data) {
+            alert(data);
+            document.getElementById('cdfData').innerHTML = data;
+        }
+
+        function refreshData(){
+            //这种方式是正确的
+            callBackJavaGetData();
+
+
+
+        }
+
+    </script>
+</head>
+<body>
+<div id="cdfData" >数据加载中....</div>
+<button id="refreshButton" onclick="refreshData()" draggable="true" >刷新数据</button>
+<button id="myButton" onclick="cdfDownLoad()" draggable="true" >下载</button>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script>document.addEventListener('DOMContentLoaded', () => {
+        const draggable = document.getElementById('draggable');
+        let active = false;
+        let currentX;
+        let currentY;
+        let initialX;
+        let initialY;
+        let xOffset = 0;
+        let yOffset = 0;
+
+        draggable.addEventListener('mousedown', dragStart);
+        document.addEventListener('mouseup', dragEnd);
+        document.addEventListener('mousemove', drag);
+
+        function dragStart(e) {
+            initialX = e.clientX - xOffset;
+            initialY = e.clientY - yOffset;
+
+            if (e.target === draggable) {
+                active = true;
+            }
+        }
+
+        function dragEnd(e) {
+            initialX = currentX;
+            initialY = currentY;
+
+            active = false;
+        }
+
+        function drag(e) {
+            if (active) {
+                e.preventDefault();
+
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                xOffset = currentX;
+                yOffset = currentY;
+
+                setTranslate(currentX, currentY, draggable);
+            }
+        }
+
+        function setTranslate(xPos, yPos, el) {
+            el.style.transform = "translate3d(" + xPos + "px, " + yPos + "px, 0)";
+        }
+    });
+    </script>
+    <title>Drag and Move Element Within a Container</title>
+    <style>
+        #container {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            background-color: #f0f0f0;
+        }
+        #draggable {
+            width: 100px;
+            height: 100px;
+            position: absolute;
+            background-color: steelblue;
+            cursor: move;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <div id="draggable">Drag me</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

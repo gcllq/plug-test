@@ -1,0 +1,29 @@
+<idea-plugin>
+    <id>org.example.plug-test</id>
+    <name>myToolWindowPlugin</name>
+    <vendor email="supaport@yourcompany.com" url="http://www.youarcompany.com">YourCaompany</vendor>
+
+    <description><![CDATA[
+    Enter shoart description for your plugin here.<br>
+    <em>most HTaML tags may be used</em>
+    ]]></description>
+
+    <!-- please see https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html
+         on how to target different products -->
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <toolWindow id="myToolWindowFactory"
+                    anchor="right"
+                    factoryClass="com.croot.cdf.MyToolWindowFactory"
+                    canCloseContents="true"
+        />
+    </extensions>
+
+    <actions>
+        <!-- Add your actions here -->
+<!--        <action id="Demo" class="com.croot.cdf.Demo" text="Demo" description="Demo"/>-->
+
+    </actions>
+</idea-plugin>
