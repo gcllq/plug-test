@@ -1,10 +1,14 @@
 package com.croot.cdf;
 
 
+import com.croot.cdf.util.CdfModuleUtil;
 import com.intellij.ui.jcef.JBCefApp;
 import com.intellij.ui.jcef.JBCefBrowser;
 import com.intellij.ui.jcef.JBCefBrowserBase;
 import com.intellij.ui.jcef.JBCefJSQuery;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.cef.browser.CefBrowser;
 import org.cef.browser.CefFrame;
@@ -14,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Random;
 
 public class MyWebToolWindowContent2 {
@@ -68,10 +73,27 @@ public class MyWebToolWindowContent2 {
                 return new JBCefJSQuery.Response(args);
             });
 
+            //获取module
+            JBCefJSQuery moduleQuery = JBCefJSQuery.create(jbCefBrowser);
+            moduleQuery.addHandler((String args) -> {
+                List<String> moduleNames = CdfModuleUtil.getModuleNames();
+                System.out.println("==========modules" + moduleNames);
+                return new JBCefJSQuery.Response(moduleNames.toString());
+            });
+
             jbCefBrowser.getJBCefClient().addLoadHandler(new CefLoadHandlerAdapter() {
 
                 @Override
                 public void onLoadEnd(CefBrowser browser, CefFrame frame, int httpStatusCode) {
+                    jbCefBrowser.getCefBrowser().executeJavaScript(
+                            "window.cdfModules = function() {" +
+                                    "return  " + moduleQuery.inject(
+                                    "",
+                                    "function(response){alert('moduleRefresh' + response);}",
+                                    "function(errorCode, errorMsg){alert('cdfModules，msg=' + errorMsg);}") + // 5
+                                    "};",
+                            jbCefBrowser.getCefBrowser().getURL(), 0);
+
 
                     jbCefBrowser.getCefBrowser().executeJavaScript( // 4
                             "window.callBackJavaGetData = function() {" +
@@ -99,8 +121,23 @@ public class MyWebToolWindowContent2 {
 
 
     private String getData() {
-        return "newData-" + new Random().nextInt();
-//        return "" + 1 / 0;
+        OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder()
+                .url("http://localhost:8080/dataDictionary/allMetaData")
+                .build();
+
+        String responseBody = "";
+        try (Response response = client.newCall(request).execute()) {
+            if (response.isSuccessful() && response.body() != null) {
+                responseBody = response.body().string();
+                System.out.println(responseBody);
+            } else {
+                System.err.println("Unexpected code " + response);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return responseBody;
     }
 
     /**
